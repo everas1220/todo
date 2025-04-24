@@ -26,5 +26,5 @@ public class ToDoDTO {
 
     private LocalDateTime createdDate;
 
-    private LocalDateTime updateDate;
+    private LocalDateTime updatedDate;
 }

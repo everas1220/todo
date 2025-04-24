@@ -21,6 +21,27 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final ModelMapper modelMapper;
 
+    public Long create(ToDoDTO dto) {
+
+        ToDo todo = modelMapper.map(dto, ToDo.class);
+        return todoRepository.save(todo).getId();
+    }
+
+    public void remove(Long id) {
+        todoRepository.deleteById(id);
+    }
+
+    public ToDoDTO read(Long id) {
+        ToDo todo = todoRepository.findById(id).get();
+        return modelMapper.map(todo, ToDoDTO.class);
+    }
+
+    public Long changeCompleted(ToDoDTO dto) {
+        ToDo toDo = todoRepository.findById(dto.getId()).get();
+        toDo.setCompleted(true);
+        return todoRepository.save(toDo).getId();
+    }
+
     public List<ToDoDTO> list(boolean completed) {
         List<ToDo> list = todoRepository.findByCompleted(completed);
         // ToDo entity => TodoDTO 변경 후 리턴
