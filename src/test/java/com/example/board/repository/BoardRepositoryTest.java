@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.example.board.dto.PageRequestDTO;
 import com.example.board.entity.Board;
 import com.example.board.entity.Member;
 import com.example.board.entity.Reply;
@@ -106,9 +107,15 @@ public class BoardRepositoryTest {
 
     @Test
     public void listTest() {
-        // PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(10).build();
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
-        Page<Object[]> result = boardRepository.list(pageable);
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(10)
+                .size(10)
+                .type("tc")
+                .keyword("title")
+                .build();
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(),
+                Sort.by("bno").descending());
+        Page<Object[]> result = boardRepository.list(pageRequestDTO.getType(), pageRequestDTO.getKeyword(), pageable);
 
         for (Object[] objects : result) {
             System.out.println(Arrays.toString(objects));
