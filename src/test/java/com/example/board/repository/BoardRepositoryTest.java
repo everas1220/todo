@@ -1,6 +1,7 @@
 package com.example.board.repository;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -22,16 +23,25 @@ import jakarta.transaction.Transactional;
 public class BoardRepositoryTest {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private BoardRepository boardRepository;
 
     @Autowired
-    private BoardRepository boardRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private ReplyRepository replyRepository;
 
     @Test
+    public void listReplyTest() {
+        Board board = Board.builder().bno(100L).build();
+        List<Reply> list = replyRepository.findByBoardOrderByRno(board);
+
+        System.out.println(list);
+    }
+
+    @Test
     public void insertMemberTest() {
+
         IntStream.rangeClosed(1, 10).forEach(i -> {
             Member member = Member.builder()
                     .email("user" + i + "@gmail.com")
@@ -55,6 +65,7 @@ public class BoardRepositoryTest {
                     .content("Board Content" + i)
                     .member(member)
                     .build();
+
             boardRepository.save(board);
         });
     }
@@ -92,7 +103,7 @@ public class BoardRepositoryTest {
     @Transactional
     @Test
     public void readBoardTest3() {
-        Board board = boardRepository.findById(4L).get();
+        Board board = boardRepository.findById(5L).get();
         System.out.println(board.getMember());
         System.out.println(board.getReplies());
     }
@@ -105,10 +116,12 @@ public class BoardRepositoryTest {
         System.out.println(reply.getBoard());
     }
 
+    // querydsl
     @Test
     public void listTest() {
+
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .page(10)
+                .page(0)
                 .size(10)
                 .type("tc")
                 .keyword("title")
@@ -124,7 +137,7 @@ public class BoardRepositoryTest {
 
     @Test
     public void rowTest() {
-        Object[] result = boardRepository.getBoardByBno(9L);
+        Object[] result = boardRepository.getBoardByBno(5L);
         System.out.println(Arrays.toString(result));
     }
 }

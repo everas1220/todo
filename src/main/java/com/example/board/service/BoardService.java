@@ -2,7 +2,6 @@ package com.example.board.service;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -43,7 +42,7 @@ public class BoardService {
         @Transactional // Reply, BoardTBL 두개의 테이블 접근 => 한번에 처리
         public void delete(Long bno) {
 
-                replyRepository.deldeleteByBoardBno(bno);
+                replyRepository.deleteByBoardBno(bno);
 
                 boardRepository.deleteById(bno);
         }
@@ -92,7 +91,7 @@ public class BoardService {
         }
 
         private Board dtoToEntity(BoardDTO dto) {
-                Board board = BoardDTO.builder()
+                Board board = Board.builder()
                                 .bno(dto.getBno())
                                 .title(dto.getTitle())
                                 .content(dto.getContent())

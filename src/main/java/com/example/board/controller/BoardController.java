@@ -18,7 +18,6 @@ import com.example.board.service.BoardService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor

@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import com.example.board.dto.PageRequestDTO;
 import com.example.board.entity.Board;
 import com.example.board.entity.QBoard;
 import com.example.board.entity.QMember;
@@ -77,16 +76,21 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 
         // 검색
         BooleanBuilder builder = new BooleanBuilder();
-        if (type.contains("t")) {
-            builder.or(board.title.contains(keyword));
+
+        if (type != null) {
+            if (type.contains("t")) {
+                builder.or(board.title.contains(keyword));
+            }
+            if (type.contains("c")) {
+                builder.or(board.content.contains(keyword));
+            }
+            if (type.contains("w")) {
+                builder.or(board.member.name.contains(keyword));
+            }
+            booleanBuilder.and(builder);
+
         }
-        if (type.contains("c")) {
-            builder.or(board.content.contains(keyword));
-        }
-        if (type.contains("w")) {
-            builder.or(board.member.name.contains(keyword));
-        }
-        booleanBuilder.and(builder);
+
         tuple.where(booleanBuilder);
 
         // Sort 생성
