@@ -19,7 +19,9 @@
       <label for="name" class="form-label">작성자</label>
       <input type="text" class="form-control" id="name" name="name" th:value="${dto.name}">
     </div>
-    <a class="btn btn-primary">수정</a>
+    <a class="btn btn-primary" th:href="@{modify(bno=${dto.bno},page)}"
+      th:if="${#authentication.name} == ${dto.email}">수정</a>
+
     <a class="btn btn-success"
       th:href="@{list(page=${pageRequestDTO.page},size=${pageRequestDTO.size},type=${pageRequestDTO.type},keyword=${pageRequestDTO.keyword})}">목록</a>
   </form>

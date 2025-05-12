@@ -28,8 +28,6 @@ public class BoardDTO {
     private LocalDateTime updatedTime;
 
     // Member
-    @Email(message = "이메일 형식을 확인해주세요")
-    @NotBlank(message = "작성자를 입력해 주세요")
     private String email;
     private String name;
 

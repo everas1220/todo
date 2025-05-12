@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.board.dto.ReplyDTO;
-import com.example.board.repository.ReplyRepository;
 import com.example.board.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
