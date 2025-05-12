@@ -1,0 +1,29 @@
+1. application.priperties 수정
+2. modelmapper 라이브러리 추가
+ </dependency>
+	<dependency>
+    <groupId>org.modelmapper</groupId>
+    <artifactId>modelmapper</artifactId>
+    <version>3.2.2</version>
+ </dependency>
+3. Thymeleaf Layout Dialect
+ 	<dependency>
+    <groupId>nz.net.ultraq.thymeleaf</groupId>
+    <artifactId>thymeleaf-layout-dialect</artifactId>
+    <version>3.4.0</version>
+4. modelmapper 사용을 위해 config 파일 작성
+5. BaseEntity 작성
+6. main 클래스에 @EnableJpaAuditing 추가 작성  
+
+
+-----------------------------------------------------------------------
+ToDo
+ - todo 작성
+ - todo 완료 여부확인
+ - todo 전체 목록보기(완료하지않은 목록)
+ - todo 삭제 
+ - 작성을 완료한 todo 목록보기
+
+ToDo 테이블 
+ - 내용, 작성일자,수정일자,완료여부(true,false),중요도(중요: true, 반대는 false)
+ 
