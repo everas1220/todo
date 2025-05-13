@@ -1,7 +1,6 @@
 package com.example.board.security;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,9 +19,6 @@ public class AuthMemberDTO extends User {
     private String password;
     private boolean fromSocial;
 
-    // 소셜로그인 처리
-    private Map<String, Object> attr;
-
     // username : id 개념
     public AuthMemberDTO(String username, String password, boolean fromSocial,
             Collection<? extends GrantedAuthority> authorities) {
@@ -31,4 +27,5 @@ public class AuthMemberDTO extends User {
         this.password = password;
         this.fromSocial = fromSocial;
     }
+
 }

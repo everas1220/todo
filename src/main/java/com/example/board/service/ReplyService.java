@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.board.dto.ReplyDTO;
 import com.example.board.entity.Board;
+import com.example.board.entity.Member;
 import com.example.board.entity.Reply;
 import com.example.board.repository.ReplyRepository;
 
@@ -20,11 +21,13 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
 
+    // 댓글 삽입
     public Long create(ReplyDTO dto) {
         // dto => entity
         Reply reply = dtoToEntity(dto);
         // 삽입 후 rno 리턴
         return replyRepository.save(reply).getRno();
+
     }
 
     public List<ReplyDTO> getList(Long bno) {
@@ -36,10 +39,9 @@ public class ReplyService {
                 .collect(Collectors.toList());
     }
 
-    // 댓글하나 가져오기
+    // 댓글하나가져오기
     public ReplyDTO get(Long rno) {
         Reply reply = replyRepository.findById(rno).get();
-
         return entityToDto(reply);
     }
 
@@ -47,8 +49,10 @@ public class ReplyService {
     public Long update(ReplyDTO dto) {
         // 수정 대상 찾기
         Reply reply = replyRepository.findById(dto.getRno()).get();
+
         // 변경부분 적용
         reply.changeText(dto.getText());
+
         // 저장
         return replyRepository.save(reply).getRno();
     }
@@ -62,7 +66,8 @@ public class ReplyService {
         ReplyDTO dto = ReplyDTO.builder()
                 .rno(reply.getRno())
                 .text(reply.getText())
-                .replyer(reply.getReplyer())
+                .replyerEmail(reply.getReplyer().getEmail())
+                .replyerName(reply.getReplyer().getName())
                 .bno(reply.getBoard().getBno())
                 .createdDate(reply.getCreatedDate())
                 .build();
@@ -73,7 +78,7 @@ public class ReplyService {
         Reply reply = Reply.builder()
                 .rno(dto.getRno())
                 .text(dto.getText())
-                .replyer(dto.getReplyer())
+                .replyer(Member.builder().email(dto.getReplyerEmail()).build())
                 .board(Board.builder().bno(dto.getBno()).build())
                 .build();
         return reply;

@@ -42,8 +42,16 @@ public class Board extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    // 게시글에 달려잇는 댓들 정보 조회
+    // 게시글에 달려있는 댓글 정보 조회
     @Builder.Default
     @OneToMany(mappedBy = "board")
     private List<Reply> replies = new ArrayList<>();
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
 }

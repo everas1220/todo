@@ -60,11 +60,9 @@ public class BoardRepositoryTest {
             if (i > 5) {
                 member.addMemberRole(MemberRole.MANAGER);
             }
-
             if (i > 7) {
-                member.addMemberRole(MemberRole.MANAGER);
+                member.addMemberRole(MemberRole.ADMIN);
             }
-
             memberRepository.save(member);
         });
     }
@@ -95,9 +93,12 @@ public class BoardRepositoryTest {
             long no = (int) (Math.random() * 100) + 1;
             Board board = Board.builder().bno(no).build();
 
+            int id = (int) (Math.random() * 10) + 1;
+            Member member = Member.builder().email("user" + id + "@gmail.com").build();
+
             Reply reply = Reply.builder()
                     .text("Reply...." + i)
-                    .replyer("guest" + i)
+                    .replyer(member)
                     .board(board)
                     .build();
             replyRepository.save(reply);

@@ -35,9 +35,6 @@ public class Member extends BaseEntity {
 
     private boolean fromSocial;
 
-    // role 저장
-    // List : 중복된 Role 가능 or Set : 중복된 Role 담지 못하게
-    // 한 사람에게 여러 role 부여됨 : admin, manger, member
     @ElementCollection(fetch = FetchType.LAZY) // 1:N 관계로 테이블 생성
     @Builder.Default
     private Set<MemberRole> roleSet = new HashSet<>();

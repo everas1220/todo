@@ -1,5 +1,7 @@
 package com.example.board.controller;
 
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.board.dto.BoardDTO;
 import com.example.board.dto.PageRequestDTO;
@@ -19,11 +21,12 @@ import com.example.board.service.BoardService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@RequiredArgsConstructor
 @RequestMapping("/board")
 @Controller
+@RequiredArgsConstructor
 @Log4j2
 public class BoardController {
 
@@ -31,20 +34,25 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public void getCteate(@ModelAttribute("dto") BoardDTO dto) {
+    public void getCreate(@ModelAttribute("dto") BoardDTO dto, PageRequestDTO pageRequestDTO) {
         log.info("글 작성 폼 요청");
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String postCteate(@ModelAttribute("dto") @Valid BoardDTO dto, BindingResult result,
+    public String postCreate(@ModelAttribute("dto") @Valid BoardDTO dto, BindingResult result,
             PageRequestDTO pageRequestDTO,
             RedirectAttributes rttr) {
-        log.info("글 작성 요청{}", dto);
+        log.info("글 작성 요청 {}", dto);
 
+        // 유효성 검증 후 결과 확인
         if (result.hasErrors()) {
             return "/board/create";
         }
+
+        // 서비스 호출
+        boardService.create(dto);
+
         rttr.addAttribute("page", pageRequestDTO.getPage());
         rttr.addAttribute("size", pageRequestDTO.getSize());
         rttr.addAttribute("type", pageRequestDTO.getType());
@@ -52,14 +60,31 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+    @PreAuthorize("permitAll()")
+    @GetMapping("/list")
+    public void getList(Model model, PageRequestDTO pageRequestDTO) {
+        log.info("List 요청 {}", pageRequestDTO);
+
+        PageResultDTO<BoardDTO> result = boardService.getList(pageRequestDTO);
+        model.addAttribute("result", result);
+    }
+
+    @GetMapping({ "/read", "/modify" })
+    public void getRead(Long bno, PageRequestDTO pageRequestDTO, Model model) {
+        log.info("get {}", bno);
+
+        BoardDTO dto = boardService.getRow(bno);
+        model.addAttribute("dto", dto);
+    }
+
     @PreAuthorize("authentication.name == #dto.email")
     @PostMapping("/modify")
-    public String postModify(BoardDTO dto, PageRequestDTO pageRequestDTO,
-            RedirectAttributes rttr) {
+    public String postModify(BoardDTO dto, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("수정 {} {}", dto, pageRequestDTO);
 
         Long bno = boardService.update(dto);
-
+        // 수정 완료 후 read 로 이동
+        rttr.addAttribute("bno", bno);
         rttr.addAttribute("page", pageRequestDTO.getPage());
         rttr.addAttribute("size", pageRequestDTO.getSize());
         rttr.addAttribute("type", pageRequestDTO.getType());
@@ -67,18 +92,20 @@ public class BoardController {
         return "redirect:/board/read";
     }
 
-    @GetMapping("/list")
-    public void getList(Model model, PageRequestDTO pageRequestDTO) {
-        log.info("List 요청", pageRequestDTO);
+    // 로그인 사용자 == 작성자
+    @PreAuthorize("authentication.name == #email")
+    @PostMapping({ "/remove" })
+    public String getRemove(Long bno, String email, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
+        log.info("remove {}", bno);
 
-        PageResultDTO<BoardDTO> result = boardService.getList(pageRequestDTO);
-        model.addAttribute("result", result);
+        // 삭제
+        boardService.delete(bno);
+
+        rttr.addAttribute("page", pageRequestDTO.getPage());
+        rttr.addAttribute("size", pageRequestDTO.getSize());
+        rttr.addAttribute("type", pageRequestDTO.getType());
+        rttr.addAttribute("keyword", pageRequestDTO.getKeyword());
+        return "redirect:/board/list";
     }
 
-    @GetMapping({ "/read", "/modity" })
-    public void getRead(Long bno, PageRequestDTO pageRequestDTO, Model model) {
-        log.info("get{}", bno);
-        BoardDTO dto = boardService.getRow(bno);
-        model.addAttribute("dto", dto);
-    }
 }

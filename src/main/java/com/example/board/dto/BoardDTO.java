@@ -14,22 +14,25 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Setter
 @Getter
+@Setter
+@Builder
 public class BoardDTO {
 
     private Long bno;
+
     @NotBlank(message = "제목을 입력해 주세요")
     private String title;
     @NotBlank(message = "내용을 입력해 주세요")
     private String content;
-    private LocalDateTime createdTime;
-    private LocalDateTime updatedTime;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
     // Member
     private String email;
     private String name;
 
+    // 댓글개수
     private Long replyCount;
+
 }
