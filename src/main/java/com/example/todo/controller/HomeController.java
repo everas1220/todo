@@ -1,19 +1,20 @@
-package com.example.board.controller;
+package com.example.todo.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@Log4j2
+@RequiredArgsConstructor
 @Controller
 public class HomeController {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/")
     public String getHome() {
-        return "redirect:/board/list";
+        return "home";
     }
 
 }

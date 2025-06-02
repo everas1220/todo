@@ -1,4 +1,4 @@
-package com.example.board.config;
+package com.example.todo.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
