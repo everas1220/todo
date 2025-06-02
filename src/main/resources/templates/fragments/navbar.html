@@ -14,6 +14,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
+<<<<<<< HEAD
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
@@ -24,6 +25,29 @@
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+=======
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+          <li class="nav-item active"><a class="nav-link" th:href="@{/}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              id="navbarDropdown"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >회원</a
+            >
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" th:href="@{/member/login}" sec:authorize="!isAuthenticated()">Login</a>
+              <a class="dropdown-item" th:href="@{/member/register}" sec:authorize="!isAuthenticated()">Register</a>
+              <a class="dropdown-item" th:href="@{/member/logout}" sec:authorize="isAuthenticated()">Logout</a>
+              <a class="dropdown-item" href="#!" sec:authorize="isAuthenticated()">비밀번호변경</a>
+            </div>
+>>>>>>> 5fa5d6730014d6e9a2bf63aad09d555c338e032d
           </li>
         </ul>
         <form class="d-flex" role="search">

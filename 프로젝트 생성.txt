@@ -31,6 +31,8 @@ ToDo 테이블
 ------------------------------------
 
 404 에러 : 컨트롤러 
+403 에러 : scrf 값 확인 form action 값 적었는지 확인
+           axios, fetch => headers 에 값 추가했는지 확인
 500 에러 : 서버 터미널
 
 js 수정 : 브라우저 콘솔
@@ -38,3 +40,28 @@ js 수정 : 브라우저 콘솔
 
 
 
+-thymeleaf security 표현하기 
+ -value="${#authentication.principal.name}"
+ -sec:authentication="name" : id 가져오가
+ -sec:authentication="principal.authorities" : 권한 가져오기
+ -sec:authorize="hasAnyRole({'ROLE_USER','ROLE_ADMIN','ROLE_MANAGER'})"
+    hasAnyRole() : Role 여러개 중에 하나만 만족한다면
+    hasRole() : Role 하나만 작성하고 그 Role를 만족한다면
+
+- 작성한 경로를 제외하고는 모두 로그인이 필요함 
+http 
+.authorizeHttpRequests(authorize -> authorize.requestMatchers("/assets/**", "/css/**", "/js/**", "/img/**").permitAll()
+.anyRequest().authenticated())
+
+- .anyRequest().permitAll() : 컨트롤러 메소드 단에서 제어
+    @PreAuthorize("is")
+
+
+서버 : 스프링부트 
+        컨트롤러 -> 서비스 -> 리포지토리 
+        ex) DTO, Entity
+ 화면 : 프로젝트마다 다름
+        jsp(레거시 프로젝트), 템플릿(thymeleaf,.....)requestMatchers
+    
+   jsp 는 thymeleaf 와 유사 
+            스프링부트에서는 jsp는 기본 템플릿이 아님 => 설정 작업 필요 
